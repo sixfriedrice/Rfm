@@ -243,6 +243,11 @@ So, for an annoying, but detailed load of output, make a connection like this:
 
 These options will change in the future. They're only there now as a quick-easy way for me to track down problems. I'm open to suggestions for what kind of login options will make sense in the final release.
 
+== ToDo
+	Add Tests
+	Add support for a faster xml parser (would like to give option for which parser to use)
+	Add a configuration file so things aren't so cryptic
+
 == Copyright
 
 Copyright (c) 2007 Six Fried Rice, LLC and Mufaddal Khumr. See LICENSE for details.
