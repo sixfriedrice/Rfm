@@ -28,7 +28,7 @@ Once the gem is installed, you can use rfm in your ruby scripts by requiring it:
 IMPORTANT:SSL and Certificate verification are on by default. Please see Server#new in rdocs for explanation and setup.
 You connect with the Rfm::Server object. This little buddy will be your window into FileMaker data.
 
-  require 'rfm/rfm'
+  require 'rfm'
 
   my_server = Rfm::Server.new(
     :host => 'myservername',
@@ -244,9 +244,9 @@ So, for an annoying, but detailed load of output, make a connection like this:
 These options will change in the future. They're only there now as a quick-easy way for me to track down problems. I'm open to suggestions for what kind of login options will make sense in the final release.
 
 == ToDo
-	Add Tests
-	Add support for a faster xml parser (would like to give option for which parser to use)
-	Add a configuration file so things aren't so cryptic
+Add Tests
+Add support for a faster xml parser (would like to give option for which parser to use)
+Add a configuration file so things aren't so cryptic
 
 == Copyright
 
