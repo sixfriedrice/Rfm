@@ -64,8 +64,8 @@ module Rfm
         @server = server
         @resultset = nil
         @layout = layout
-        @fields = Rfm::Util::CaseInsensitiveHash.new
-        @portals = Rfm::Util::CaseInsensitiveHash.new
+        @fields = Rfm::Utility::CaseInsensitiveHash.new
+        @portals = Rfm::Utility::CaseInsensitiveHash.new
         @date_format = nil
         @time_format = nil
         @timestamp_format = nil
@@ -218,7 +218,7 @@ module Rfm
     # * *mod_id* is the modification identifier for the record; whenever a record is modified, its +mod_id+
     #   changes so you can tell if the Record object you're looking at is up-to-date as compared to another
     #   copy of the same record
-    class Record < Rfm::Util::CaseInsensitiveHash
+    class Record < Rfm::Utility::CaseInsensitiveHash
       
       # Initializes a Record object. You really really never need to do this yourself. Instead, get your records
       # from a ResultSet object.
@@ -245,7 +245,7 @@ module Rfm
           end
         }
         
-        @portals = Rfm::Util::CaseInsensitiveHash.new
+        @portals = Rfm::Utility::CaseInsensitiveHash.new
         row_element.each_element('relatedset') { |relatedset|
           table = relatedset.attributes['table']
           records = []

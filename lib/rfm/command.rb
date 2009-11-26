@@ -520,8 +520,8 @@ module Rfm
         @db = db
         
         @loaded = false
-        @field_controls = Rfm::Util::CaseInsensitiveHash.new
-        @value_lists = Rfm::Util::CaseInsensitiveHash.new
+        @field_controls = Rfm::Utility::CaseInsensitiveHash.new
+        @value_lists = Rfm::Utility::CaseInsensitiveHash.new
       end
       
       attr_reader :name, :db
