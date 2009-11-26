@@ -223,10 +223,8 @@
 # 
 # Now Rails will no longer insist on a SQL database.
  
-$: << File.expand_path(File.dirname(__FILE__))
-
-require 'rfm_command'
-require 'rfm_util'
-require 'rfm_result'
-require 'rfm_factory'
-require 'rfm_error'
+require File.dirname(__FILE__) + "/rfm/command"
+require File.dirname(__FILE__) + "/rfm/util"
+require File.dirname(__FILE__) + "/rfm/result"
+require File.dirname(__FILE__) + "/rfm/factory"
+require File.dirname(__FILE__) + "/rfm/error"
