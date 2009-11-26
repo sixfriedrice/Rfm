@@ -1,4 +1,4 @@
-require 'net/http'
+require 'net/https'
 require 'rexml/document'
 require 'cgi'
 
@@ -59,6 +59,46 @@ module Rfm
     
     class Server
       
+      #
+      # SSL AND CERTIFICATE VERIFICATION ARE ON BY DEFAULT
+      #     
+      # Example to turn off SSL:
+      # 
+      # response = myServer.do_action(
+      #           :host => 'localhost',
+      #           :account_name => 'sample',
+      #           :password => '12345',
+      #           :ssl => false 
+      #           )
+      #           
+      # Example using SSL without *root_cert*:
+      #           
+      # response = myServer.do_action(
+      #           :host => 'localhost',
+      #           :account_name => 'sample',
+      #           :password => '12345',
+      #           :root_cert => false 
+      #           )
+      #          
+      # Example using SSL with *root_cert* at file root:
+      # 
+      # response = myServer.do_action(
+      #            :host => 'localhost',
+      #            :account_name => 'sample',
+      #            :password => '12345',
+      #            :root_cert_name => 'example.pem' 
+      #            )
+      #            
+      # Example using SSL with *root_cert* specifying *root_cert_path*:
+      # 
+      # response = myServer.do_action(
+      #            :host => 'localhost',
+      #            :account_name => 'sample',
+      #            :password => '12345',
+      #            :root_cert_name => 'example.pem'
+      #            :root_cert_path => '/usr/cert_file/'
+      #            )
+      #
       # To create a Server obejct, you typically need at least a host name:
       # 
       #   myServer = Rfm::Server.new({:host => 'my.host.com'})
@@ -67,9 +107,20 @@ module Rfm
       #
       # * *host* the hostname of the Web Publishing Engine (WPE) server (defaults to 'localhost')
       #
-      # * *port* the port number the WPE is listening no (defaults to 80)
+      # * *port* the port number the WPE is listening no (defaults to 80 unless *ssl* +true+ which sets it to 443)
       #
-      # * *ssl* +true+ if you want to use SSL (HTTPS) to connect to FileMaker (defaults to +false+)
+      # * *ssl* +false+ if you want to turn SSL (HTTPS) off when connecting to connect to FileMaker (default is +true+)
+      #
+      # If you have SSL on and want
+      # * *root_cert* +false+ if you do not want to verify your SSL session (default is +true+). 
+      #   You will want to turn this off if you are using a self signed certificate and do not have a certificate authority cert file.
+      #   If you choose this option you will need to provide a cert *root_cert_name* and *root_cert_path* (if not in root directory).
+      #
+      # * *root_cert_name* name of pem file for certificate verification (Root cert from certificate authority who issued certificate.
+      #   If self signed certificate do not use this option!!). You can download the entire bundle of CA Root Certificates
+      #   from http://curl.haxx.se/ca/cacert.pem. Place the pem file in config directory.
+      #
+      # * *root_cert_path* path to cert file. (defaults to '/' if no path given)
       #
       # * *account_name* the default account name to log in to databases with (you can also supply a
       #   account name on a per-database basis if necessary)
@@ -94,7 +145,10 @@ module Rfm
         @state = {
           :host => 'localhost',
           :port => 80,
-          :ssl => false,
+          :ssl => true,
+          :root_cert => true,
+          :root_cert_name => '',
+          :root_cert_path => '/',
           :account_name => '',
           :password => '',
           :log_actions => false,
@@ -112,7 +166,7 @@ module Rfm
         
         @host_name = @state[:host]
         @scheme = @state[:ssl] ? "https" : "http"
-        @port = @state[:port]
+        @port = @state[:ssl] && options[:port].nil? ? 443 : @state[:port]
         
         @db = Rfm::Factory::DbFactory.new(self)
       end
@@ -188,7 +242,18 @@ module Rfm
         request.basic_auth(account_name, password)
         request.set_form_data(post_data)
     
-        response = Net::HTTP.start(host_name, port) { |http|
+        response = Net::HTTP.new(host_name, port)
+        if @scheme == "https"  # enable SSL
+          response.use_ssl = true
+          if @state[:root_cert]
+            response.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            response.ca_file = File.join(@state[:root_cert_path], @state[:root_cert_name])
+          else
+            response.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
+        end
+        
+        response = response.start { |http|
           http.request(request)
         }
         
