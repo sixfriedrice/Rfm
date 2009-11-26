@@ -10,7 +10,7 @@ begin
     gem.email = "http://groups.google.com/group/rfmcommunity"
     gem.homepage = "http://sixfriedrice.com/wp/products/rfm/"
     gem.authors = ["Geoff Coffey", "Mufaddal Khumri", "Atsushi Matsuo"]
-    gem.files = FileList['lib/*.rb']
+    gem.files = FileList['lib/*.rb', 'lib/rfm/*.rb']
     gem.rdoc_options = [ "--line-numbers", "--main", "README.rdoc" ]
   end
   Jeweler::GemcutterTasks.new
