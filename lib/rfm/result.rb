@@ -69,6 +69,8 @@ module Rfm
         @date_format = nil
         @time_format = nil
         @timestamp_format = nil
+        @total_count = nil
+        @foundset_count = nil
         
         doc = REXML::Document.new(fmresultset)
         root = doc.root
@@ -84,6 +86,10 @@ module Rfm
         @date_format = convertFormatString(datasource.attributes['date-format'])
         @time_format = convertFormatString(datasource.attributes['time-format'])
         @timestamp_format = convertFormatString(datasource.attributes['timestamp-format'])
+        
+        # process count metadata
+        @total_count = datasource.attributes['total-count'].to_i
+        @foundset_count = root.elements['resultset'].attributes['count'].to_i
         
         # process field metadata
         root.elements['metadata'].each_element('field-definition') { |field|
@@ -110,7 +116,7 @@ module Rfm
         }
       end  
           
-      attr_reader :server, :fields, :portals, :date_format, :time_format, :timestamp_format, :layout
+      attr_reader :server, :fields, :portals, :date_format, :time_format, :timestamp_format, :total_count, :foundset_count, :layout
       
       private
       
