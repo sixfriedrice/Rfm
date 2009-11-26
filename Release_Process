@@ -1,0 +1,4 @@
+git status             		# check you have a clean working directory
+rake version:bump:minor		# or patch or major, commits the change
+rake gemspec           		# to generate the new gemspec file
+rake release 				   		# publish the gem

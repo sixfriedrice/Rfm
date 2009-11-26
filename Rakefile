@@ -9,7 +9,7 @@ begin
     gem.description = "Rfm brings your FileMaker data to Ruby with elegance and speed. Now your Ruby scripts and Rails applications can talk directly to your FileMaker server with a syntax that just feels right."
     gem.email = "http://groups.google.com/group/rfmcommunity"
     gem.homepage = "http://sixfriedrice.com/wp/products/rfm/"
-    gem.authors = ["Geoff Coffey", "Mufaddal Khumri", "Atsushi Matsuo"]
+    gem.authors = ["Geoff Coffey", "Mufaddal Khumri", "Atsushi Matsuo", "Larry Sprock"]
     gem.files = FileList['lib/*.rb', 'lib/rfm/*.rb']
     gem.rdoc_options = [ "--line-numbers", "--main", "README.rdoc" ]
   end
